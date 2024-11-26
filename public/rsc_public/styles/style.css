@@ -1,0 +1,135 @@
+*{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0px;
+    margin: 0px;
+}
+body{
+    background-color: slategray;
+}
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background-color: aliceblue;
+}
+.header__title{
+    display: flex;
+    color: var(--primaryColor);
+    align-items: center;
+}
+.header__nav{
+    padding: 10px;
+}
+.nav__list{
+    list-style: none;
+    display: flex;
+}
+.nav__listItem{
+    margin: 0px 10px 0px 10px;
+    display: flex;
+    justify-self: center;
+}
+.nav__link{
+    background-color: slategrey;
+    color: white;
+    text-decoration: none;
+    padding: 10px 30px;
+    font-size: 18px;
+    border-radius: 50px;
+}
+.button{
+    background-color: rgb(189, 110, 110);
+    padding: 10px 30px;
+    border-radius: 50px;
+    border: none;
+    color: slategrey;
+    font-size: 18px;
+    text-decoration: none;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.content{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    padding: 20px;
+}
+.main{
+    width: 180vh;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+/* Repetir home__login etc etc para el contenido de otras paginas */
+.home__productos{
+    background-color: slategray;
+    display: flex;
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
+    color: white;
+    column-gap: 10px;
+    row-gap: 10px;
+    justify-content: space-evenly;
+
+    flex-wrap: wrap;
+}
+.card__title{
+    text-align: start;
+    font-size: 12px;
+    padding: 0px 10px;
+}
+.card__title p{
+    font-size: 12px;
+    text-align: center;
+    margin: 10px;
+}
+.card__producto{
+    background-color: white;
+    color: black;
+    width: 19%;
+    border-radius: 20px;
+}
+.card__img{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.card__img img{
+    border-radius: 20px;
+    width: 100%;
+}
+
+.card__button{
+    background-color: slategrey;
+    padding: 10px 30px;
+    border-radius: 10px;
+    border: none;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    text-decoration: none;
+    width: fit-content;
+    margin: 10px auto;
+    display: flex;
+    align-self: center;
+    cursor: pointer;
+}
+
+.footer{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    background-color: slategrey;
+    display: flex;
+    padding: 20px;
+    color: white;
+    flex-direction: column;
+    height: 100%;
+}
+
+.error{
+    color: rgb(244, 75, 75);
+}

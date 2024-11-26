@@ -3,8 +3,9 @@
 $request = $_SERVER['REQUEST_URI'];
 
 $allowed_routes = [
-    '/' => 'home.php',
-    '/usuarios' => 'usuarios.php'
+    '/' => 'productos.php',
+    '/productos' => 'productos.php',
+    '/carrito' => 'carrito.php'
 ];
 
 if (array_key_exists($request, $allowed_routes)) {
