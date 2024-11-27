@@ -96,6 +96,11 @@ class Carrito
 
     function getCantidad(): int
     {
-        return count($_SESSION["productos"]);
+        if (empty($_SESSION["productos"])) {
+            return 0;
+        } else {
+            return count($_SESSION["productos"]);
+        }
+        
     }
 }
