@@ -29,7 +29,7 @@ class Model
     private array  $values = [];
     private ?string $orderBy = null;
 
-    private $table; // Definido en el hijo
+    protected $table; // Definido en el hijo
 
     public function __construct()
     {
@@ -58,7 +58,6 @@ class Model
     // Recibe la cadena de consulta y la ejecuta
     public function query($sql, $data = [], $params = null): self
     {
-        echo 'Este es el nombre de la tabla' . $this->table . ' fin.';
         try {
             $smtp = $this->conex->prepare($sql);
             if ($params !== null) {
@@ -92,7 +91,6 @@ class Model
     // Devuelve todos los registros de una tabla
     public function all(): array
     {
-        echo $this->table;
         try {
             $sql = "SELECT * FROM " . $this->table;
             $this->query($sql); 

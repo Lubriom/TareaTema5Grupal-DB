@@ -6,7 +6,7 @@
 
     $conexionProducto = new ProductoModel();
     $resultado = $conexionProducto->all();
-  
+
     echo '<pre>'; print_r($resultado); echo '</pre>';
     ?>
     <!-- <div class="card__producto">
