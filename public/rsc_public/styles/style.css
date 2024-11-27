@@ -32,10 +32,19 @@ body{
 .nav__link{
     background-color: slategrey;
     color: white;
+    border: 1px solid slategrey;
     text-decoration: none;
     padding: 10px 30px;
     font-size: 18px;
     border-radius: 50px;
+}
+.nav__link:active{
+    background-color: white;
+    color: slategray;
+    border: slategray 1px solid;
+}
+.nav__link:active svg{
+    fill: slategray;
 }
 .button{
     background-color: slategray;
@@ -47,6 +56,32 @@ body{
     text-decoration: none;
     width: fit-content;
     cursor: pointer;
+}
+.button:active{
+    background-color: white;
+    color: slategray;
+    border: 1px solid slategrey;
+}
+
+.button__alt{
+    background-color: white;
+    padding: 10px 30px;
+    border-radius: 50px;
+    border: 1px solid white;
+    color: slategray;
+    font-size: 18px;
+    text-decoration: none;
+    width: fit-content;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto;
+}
+.button__alt:active{
+    background-color: slategray;
+    color: white;
+    border: 1px solid white;
 }
 
 .content{
@@ -73,7 +108,6 @@ body{
     column-gap: 10px;
     row-gap: 10px;
     justify-content: space-evenly;
-
     flex-wrap: wrap;
 }
 .card__title{
@@ -111,6 +145,12 @@ body{
     align-self: center;
     cursor: pointer;
 }
+.card__button:active{
+    background-color: white;
+    color: slategray;
+    border: 1px solid slategrey;
+}
+
 .main__carrito{
     display: flex;
     flex-direction: row;
@@ -164,6 +204,28 @@ body{
     height: min-content;
 }
 
+.home__usuarios{
+    background-color: slategray;
+    display: flex;
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
+    color: white;
+    column-gap: 10px;
+    row-gap: 10px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.form__column{
+    display: flex;
+    flex-direction: column;
+}
+.form__dato{
+    display: flex;
+    flex-direction: column;
+}
+
 .footer{
     display: flex;
     flex-direction: column;
@@ -177,6 +239,30 @@ body{
     height: 100%;
 }
 
+input{
+    padding: 10px 10px;
+    outline: none;
+    border-radius: 5px;
+}
+label{
+    padding: 5px;
+}
+
+.table__usuarios{
+    background-color: slategray;
+    display: flex;
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
+    color: white;
+    column-gap: 10px;
+    row-gap: 10px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
 .error{
     color: rgb(244, 75, 75);
+    margin-left: 5px;
 }

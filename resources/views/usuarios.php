@@ -3,14 +3,37 @@
 
 <head>
     <?php require __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "componentes" . DIRECTORY_SEPARATOR . 'head.php'; ?>
-    <title>Inicio | Tarea_Tema5Grupal</title>
+    <title>Usuarios | Tarea_Tema5Grupal</title>
 </head>
 
 <body>
     <?php require __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "componentes" . DIRECTORY_SEPARATOR . 'header.php'; ?>
     <div class="content">
         <main class="main">
-            <?php require __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "componentes" . DIRECTORY_SEPARATOR . 'main.php'; ?>
+            <div class="home__usuarios">
+                <h2>Insertar</h2>
+                <form method="post" action="/usuarios">
+                    <?php require __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "usuarios" . DIRECTORY_SEPARATOR . 'crearUsers.php'; ?>
+                </form>
+            </div>
+            <div class="table__usuarios">
+                <h2>Ver Usuarios</h2>
+                <table>
+                    <?php require __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "usuarios" . DIRECTORY_SEPARATOR . 'verUsers.php'; ?>
+                </table>
+            </div>
+            <div class="table__usuarios">
+                <h2>Modificar Usuarios</h2>
+                <table>
+                    <?php require __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "usuarios" . DIRECTORY_SEPARATOR . 'modificarUsers.php'; ?>
+                </table>
+            </div>
+            <div class="table__usuarios">
+                <h2>Eliminar Usuarios</h2>
+                <table>
+                    <?php require __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "usuarios" . DIRECTORY_SEPARATOR . 'eliminarUsers.php'; ?>
+                </table>
+            </div>
         </main>
     </div>
     <?php require __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "componentes" . DIRECTORY_SEPARATOR . 'footer.php'; ?>
