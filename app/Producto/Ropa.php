@@ -6,11 +6,13 @@ class Ropa extends Producto
 {
     private string $talla;
 
-    function __construct(string $nombre_ropa, float $precio_ropa, string $talla)
+    function __construct(string $nombre_producto, float $precio_procucto, string $talla)
     {
-        $this->$nombre_ropa = $nombre_ropa;
-        $this->$precio_ropa = $precio_ropa;
+        parent::__construct($nombre_producto, $precio_procucto);
         $this->talla = $talla;
     }
-    public function mostrarDescripcion(): void {}
+    public function mostrarDescripcion(): string
+    {
+        return "Producto: {$this->getNombre()}, Modelo: $this->talla, Precio : {$this->getPrecio()}";
+    }
 }

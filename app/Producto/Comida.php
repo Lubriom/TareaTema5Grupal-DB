@@ -2,16 +2,19 @@
 
 namespace app\Producto;
 
+
 use DateTime;
 
 class Comida extends Producto
 {
     private DateTime $caducidad;
-    function __construct(string $nombre_comida, float $precio_comida, string $caducidad_comida)
+    function __construct(string $nombre_producto, float $precio_producto, string $caducidad_comida)
     {
-        $this->$nombre_comida = $nombre_comida;
-        $this->$precio_comida = $precio_comida;
+        parent::__construct($nombre_producto,$precio_producto);
         $this->$caducidad_comida = $caducidad_comida;
     }
-    public function mostrarDescripcion(): void {}
+    public function mostrarDescripcion(): string
+    {
+        return "Producto: {$this->getNombre()}, Caducidad: $this->caducidad, Precio : {$this->getPrecio()}";
+    }
 }

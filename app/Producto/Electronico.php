@@ -4,13 +4,15 @@ namespace app\Producto;
 
 
 class Electronico extends Producto
-{  
-    private string $modelo;     
-    function __construct(string $nombre_electrónico, float $precio_electronico, string $modelo)
+{
+    private string $modelo;
+    function __construct(string $nombre_producto, $precio_producto,string $modelo)
     {
-        $this->$nombre_electrónico = $nombre_electrónico;
-        $this->$precio_electronico = $precio_electronico;
-        $this->$modelo=$modelo;
+        parent::__construct($nombre_producto, $precio_producto);
+        $this->modelo = $modelo;
     }
-    public function mostrarDescripcion(): void {}
+    public function mostrarDescripcion(): string
+    {
+        return "Producto: {$this->getNombre()}, Modelo: $this->modelo, Precio : {$this->getPrecio()}";
+    }
 }
