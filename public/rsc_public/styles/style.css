@@ -111,7 +111,7 @@ body{
     flex-wrap: wrap;
 }
 .card__title{
-    text-align: start;
+    text-align: center;
     font-size: 12px;
     padding: 0px 10px;
 }
@@ -123,17 +123,12 @@ body{
 .card__producto{
     background-color: white;
     color: black;
-    width: 19%;
+    width: 30%;
     border-radius: 20px;
-}
-.card__img{
-    width: 100%;
-    display: flex;
+    display:flex;
     flex-direction: column;
-}
-.card__img img{
-    border-radius: 20px;
-    width: 100%;
+    justify-content: center;
+    align-content: center;
 }
 
 .card__button{
@@ -188,7 +183,8 @@ body{
     padding: 10px;
 }
 .producto p{
-    margin: auto;
+    margin: auto 10px;
+    width: max-content;
 }
 
 .opciones{
