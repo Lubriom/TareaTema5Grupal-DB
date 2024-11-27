@@ -5,6 +5,7 @@ $request = $_SERVER['REQUEST_URI'];
 $allowed_routes = [
     '/' => 'productos.php',
     '/productos' => 'productos.php',
+    '/usuarios' => 'usuarios.php',
     '/carrito' => 'carrito.php'
 ];
 
