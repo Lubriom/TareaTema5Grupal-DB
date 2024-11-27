@@ -12,12 +12,18 @@ class Carrito
 
     private $productos = array();
 
+    function __construct()
+    {
+        $this->productos = $_SESSION["productos"] ?? [];
+    }
+
     /**
      * Agrega productos en un array
      */
     function agregarProducto(Producto $producto): void
     {
         $this->productos[] = $producto;
+        $_SESSION["productos"]=$this->productos;
     }
     /**
      * Elimina un producto pasandole por parametro el id del mismo 
@@ -29,6 +35,7 @@ class Carrito
                 unset($this->productos[$producto[$id]]);
             }
         }
+        $_SESSION["productos"]=$this->productos;
     }
 
     /**
@@ -50,6 +57,8 @@ class Carrito
     function vaciarCarrito(): void
     {
         $this->productos = array();
+        $_SESSION["productos"]=$this->productos;
+
     }
 
     function mostrarCarrito(): void

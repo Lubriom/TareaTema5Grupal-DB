@@ -1,6 +1,6 @@
 <?php
 namespace app\Producto;
 
-interface VendibleInteface{
+interface VendibleInterface{
     public function calcularPrecioIva():float;
 }

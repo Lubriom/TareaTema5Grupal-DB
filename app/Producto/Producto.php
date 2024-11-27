@@ -2,7 +2,7 @@
 
 namespace app\Producto;
 
-abstract class Producto implements VendibleInteface
+abstract class Producto implements VendibleInterface
 {
     private string $id_producto;
     private string $nombre_producto;
