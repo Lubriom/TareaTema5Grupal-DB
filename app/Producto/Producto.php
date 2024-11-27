@@ -4,12 +4,15 @@ namespace app\Producto;
 
 abstract class Producto implements VendibleInterface
 {
-    private string $id_producto;
+    private static int $contador = 0;
+    private int $id_producto;
     private string $nombre_producto;
     private float $precio_producto;
     const IVA = 0.21;
     function __construct(string $nombre_producto, float $precio_producto)
     {
+        self::$contador++; 
+        $this->id_producto = self::$contador;
         $this->nombre_producto = $nombre_producto;
         $this->precio_producto = $precio_producto;
     }

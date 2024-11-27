@@ -141,10 +141,15 @@ body{
     color: black;
     border-radius: 5px;
     padding: 10px;
+    justify-content: space-around;
 }
 .producto p{
     margin: auto 10px;
     width: max-content;
+}
+
+.form_carrito{
+    display: flex;
 }
 
 .opciones{
