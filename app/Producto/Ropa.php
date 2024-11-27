@@ -15,4 +15,20 @@ class Ropa extends Producto
     {
         return "Producto: {$this->getNombre()}, Modelo: $this->talla, Precio : {$this->getPrecio()}";
     }
+
+    /**
+     * Devuelve el valor del talla del producto
+     */
+    public function getTalla(): string
+    {
+        return $this->talla;
+    }
+
+    /**
+     *  Modifica el valor del talla por el nuevo valor pasado por parametro
+     */
+    public function setTalla(string $nuevaTalla): void
+    {
+        $this->talla = $nuevaTalla;
+    }
 }
