@@ -60,10 +60,12 @@ class Model
     {
         try {
             $smtp = $this->conex->prepare($sql);
+            
             if ($params !== null) {
-                $smtp->bindValue($params, ...$data);
+                $smtp->execute($data);
+            } else {
+                $smtp->execute();
             }
-            $smtp->execute();
 
             $this->query = $smtp;
         } catch (Exception $e) {
@@ -93,8 +95,8 @@ class Model
     {
         try {
             $sql = "SELECT * FROM " . $this->table;
-            $this->query($sql); 
-            return $this->getAll(); 
+            $this->query($sql);
+            return $this->getAll();
         } catch (Exception $e) {
             die('Error al obtener los registros: ' . $e->getMessage());
         }
@@ -106,7 +108,7 @@ class Model
         try {
             if (empty($this->query)) {
                 $sql = "SELECT {$this->select} FROM {$this->table}";
-                
+
                 // Se comprueban si están definidos para añadirlos a la cadena $sql
                 if ($this->where) {
                     $sql .= " WHERE {$this->where}";
@@ -172,9 +174,10 @@ class Model
 
             $values = array_values($data); // array de los valores
 
+
             $sql = "INSERT INTO {$this->table} ({$columns}) VALUES (?" . str_repeat(', ? ', count($values) - 1) . ")";
 
-            $this->query($sql, $values);
+            $this->query($sql, $values, '?');
         } catch (Exception $e) {
             die('Error al crear el registro:' . $e->getMessage());
         }
@@ -214,15 +217,5 @@ class Model
         } catch (Exception $e) {
             die('Error al eliminar el registro: ' . $e->getMessage());
         }
-    }
-
-    // Para pruebas, devuelve como si fuese unan consulta, borrar
-    public function consultaPrueba()
-    {
-        return [
-            ['id' => 1, 'nombre' => 'Nombre1', 'apellido' => 'Apellido1'],
-            ['id' => 1, 'nombre' => 'Nombre2', 'apellido' => 'Apellido2'],
-            ['id' => 1, 'nombre' => 'Nombre3', 'apellido' => 'Apellido3']
-        ];
     }
 }

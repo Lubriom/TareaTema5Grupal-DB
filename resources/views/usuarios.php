@@ -24,15 +24,15 @@
             </div>
             <div class="table__usuarios">
                 <h2>Modificar Usuarios</h2>
-                <table>
+                <form method="post" action="/usuarios">
                     <?php require __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "usuarios" . DIRECTORY_SEPARATOR . 'modificarUsers.php'; ?>
-                </table>
+                </form>
             </div>
             <div class="table__usuarios">
                 <h2>Eliminar Usuarios</h2>
-                <table>
+                <form method="post" action="/usuarios">
                     <?php require __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "usuarios" . DIRECTORY_SEPARATOR . 'eliminarUsers.php'; ?>
-                </table>
+                </form>
             </div>
         </main>
     </div>

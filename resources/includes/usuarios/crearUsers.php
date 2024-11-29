@@ -1,7 +1,14 @@
 <?php
+
+use App\Models\UsuarioModel;
+
+
+
 if (empty($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(random_bytes(32));
 }
+
+
 
 $errores = [];
 
@@ -30,14 +37,7 @@ function comprobarErrores(array $datos, string $tipoCampo): array
                 $errores[$tipoCampo] = "Sólo puede estar formado por letras y tener una longitud máxima de 20 caracteres.";
             }
             break;
-        case 'apellido1':
-            if (empty($datos[$tipoCampo])) {
-                $errores[$tipoCampo] = "Por favor rellene el campo";
-            } else if (!preg_match("/^[a-z A-Z]{0,20}$/", $datos[$tipoCampo])) {
-                $errores[$tipoCampo] = "Sólo puede estar formado por letras y tener una longitud máxima de 20 caracteres.";
-            }
-            break;
-        case 'apellido2':
+        case 'apellido':
             if (empty($datos[$tipoCampo])) {
                 $errores[$tipoCampo] = "Por favor rellene el campo";
             } else if (!preg_match("/^[a-z A-Z]{0,20}$/", $datos[$tipoCampo])) {
@@ -61,10 +61,8 @@ $datosUsuario = [];
 if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $datosUsuario['nombre'] = functionfiltrado($_POST['nombre']);
     $datosUsuario['nombre'] = ucfirst($datosUsuario['nombre']);
-    $datosUsuario['apellido1'] = functionfiltrado($_POST['apellido1']);
-    $datosUsuario['apellido1'] = ucfirst($datosUsuario['apellido1']);
-    $datosUsuario['apellido2'] = functionfiltrado($_POST['apellido2']);
-    $datosUsuario['apellido2'] = ucfirst($datosUsuario['apellido2']);
+    $datosUsuario['apellido'] = functionfiltrado($_POST['apellido']);
+    $datosUsuario['apellido'] = ucfirst($datosUsuario['apellido']);
     $datosUsuario['edad'] = functionfiltrado($_POST['edad']);
 }
 
@@ -93,22 +91,11 @@ foreach ($datosUsuario as $clave => $campo) {
 <div class="form__column">
     <div class="form__dato">
         <label>Primer Apellido</label>
-        <input type="text" id="apellido1" name="apellido1">
+        <input type="text" id="apellido" name="apellido">
     </div>
-    <?php if (isset($errores['apellido1'])): ?>
-        <p class="error"><?php echo $errores['apellido1']; ?></p>
-    <?php elseif (!isset($errores['apellido1'])) : ?>
-        <span></span>
-    <?php endif; ?>
-</div>
-<div class="form__column">
-    <div class="form__dato">
-        <label>Segundo Apellido</label>
-        <input type="text" id="apellido2" name="apellido2">
-    </div>
-    <?php if (isset($errores['apellido2'])): ?>
-        <p class="error"><?php echo $errores['apellido2']; ?></p>
-    <?php elseif (!isset($errores['apellido2'])) : ?>
+    <?php if (isset($errores['apellido'])): ?>
+        <p class="error"><?php echo $errores['apellido']; ?></p>
+    <?php elseif (!isset($errores['apellido'])) : ?>
         <span></span>
     <?php endif; ?>
 </div>
@@ -132,11 +119,9 @@ foreach ($datosUsuario as $clave => $campo) {
 if ($hayErrores) {
     if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_POST['token'] == $_SESSION['token']) {
-            //Se muestran los datos sanitizados --> Importante: Sustituir esto por un insert en la base de datos
-            echo 'Token Correcto<br>';
-            foreach ($datosUsuario as $clave => $campo) {
-                echo $clave . ": " . $campo . "<br>";
-            }
+            $conexion = new UsuarioModel();
+            $conexion->create($datosUsuario);
+            
         } else {
             echo 'Token Invalido';
         }

@@ -55,7 +55,7 @@ function comprobarErroresMod(array $datos, string $tipoCampo): array
 
 //Se filran los datos del input
 $datosUsuario = [];
-if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST['modificar']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $datosUsuario['id'] = functionfiltrado($_POST['id']);
     $datosUsuario['nombre'] = functionfiltrado($_POST['nombre']);
     $datosUsuario['nombre'] = ucfirst($datosUsuario['nombre']);
@@ -79,7 +79,7 @@ foreach ($datosUsuario as $clave => $campo) {
 
 <div class="form__column">
     <div class="form__dato">
-        <label>ID</label>
+        <label>ID del usuario a modificar:</label>
         <input type="text" id="id" name="id">
     </div>
     <?php if (isset($errores['id'])): ?>
@@ -139,7 +139,7 @@ foreach ($datosUsuario as $clave => $campo) {
 
 //Se comprueba que hay errores y se procede a modificar el usuario en la base de datos.
 if ($hayErrores) {
-    if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['modificar']) && $_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_POST['token'] == $_SESSION['token']) {
             //Se muestran los datos sanitizados --> Importante: Sustituir esto por un update en la base de datos
             echo 'Token Correcto<br>';

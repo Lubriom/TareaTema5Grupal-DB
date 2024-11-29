@@ -27,7 +27,7 @@ function comprobarErroresDel(array $datos, string $tipoCampo): array
 
 //Se filran los datos del input
 $datosUsuario = [];
-if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST['eliminar']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $datosUsuario['id'] = functionfiltrado($_POST['id']);
 }
 
@@ -54,13 +54,13 @@ foreach ($datosUsuario as $clave => $campo) {
     <?php endif; ?>
 </div>
 <input type="hidden" id="token" name="token" value="<?php echo $_SESSION['token']; ?>">
-<input class="button__alt" type="submit" id="modificar" name="modificar" value="Eliminar Usuario">
+<input class="button__alt" type="submit" id="eliminar" name="eliminar" value="Eliminar Usuario">
 
 <?php
 
 //Se comprueba que hay errores y se procede a eliminar el usuario en la base de datos.
 if ($hayErrores) {
-    if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['eliminar']) && $_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_POST['token'] == $_SESSION['token']) {
             //Se muestran los datos sanitizados --> Importante: Sustituir esto por un delete en la base de datos
             echo 'Token Correcto<br>';
