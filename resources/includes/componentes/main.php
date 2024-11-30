@@ -12,8 +12,6 @@
     use App\Producto\Producto;
     use app\Producto\Ropa;
 
-    ob_start();
-
     $prodRopaModel = new ProductoModel();
     $prodElecModel = new ProductoModel();
     $prodComidaModel = new ProductoModel();

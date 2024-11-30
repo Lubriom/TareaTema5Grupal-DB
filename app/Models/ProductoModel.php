@@ -21,23 +21,42 @@ class ProductoModel extends Model
     // protected $db_pass = '';
     // protected $db_name = 'mvc_database'; 
 
-    function aniadirProducto() 
+    function aniadirProducto() : void
     {
-        
+
         try {
-            $conex = $this->getConnection(); // Obtiene la conexión
+            $conex = $this->getConnection();
             $conex->beginTransaction();
-            
+
             $conex->query("INSERT INTO producto(nombre, precio) VALUES ('Calcetin', 9.99);");
-            $conex->query("INSERT INTO ropa(talla, id_prod) VALUES ('XXL',".$conex->lastInsertId().");");
+            $conex->query("INSERT INTO ropa(talla, id_prod) VALUES ('XXL'," . $conex->lastInsertId() . ");");
             $conex->query("INSERT INTO producto(nombre, precio) VALUES ('Fresa', 12.50);");
-            $conex->query("INSERT INTO comida(caducidad, id_prod) VALUES ('2024-12-19',".$conex->lastInsertId().");");
+            $conex->query("INSERT INTO comida(caducidad, id_prod) VALUES ('2024-12-19'," . $conex->lastInsertId() . ");");
             $conex->query("INSERT INTO producto(nombre, precio) VALUES ('Pen', 9.99);");
-            $conex->query("INSERT INTO electronico(modelo, id_prod) VALUES ('toshiba',".$conex->lastInsertId().");");
-            $conex->commit(); // Confirma la transacción
+            $conex->query("INSERT INTO electronico(modelo, id_prod) VALUES ('toshiba'," . $conex->lastInsertId() . ");");
+
+            $conex->commit();
         } catch (Exception $e) {
-            $conex->rollBack(); // Revierte los cambios en caso de error
+            $conex->rollBack();
             echo "Ha habido algún error!!: " . $e->getMessage();
+        }
+    }
+
+    function contarProductos() : Int
+    {
+        try {
+            $conex = $this->getConnection();
+            
+            $resultado = $conex->prepare('CALL contar_productos (@totalProductos)');
+            $resultado->execute();
+
+            $resultado->closeCursor();
+            $resultado = $conex->query("SELECT @totalProductos AS total");
+            $totalProductos = $resultado->fetchColumn(); 
+
+            return $totalProductos;
+        } catch (Exception $e) {
+            die("Error al contar los productos: " . $e->getMessage());
         }
     }
 }

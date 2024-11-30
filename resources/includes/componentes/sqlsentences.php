@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\ProductoModel;
 
 $conexion = new ProductoModel();
@@ -29,9 +30,11 @@ if (isset($_POST['transaccion'])) {
         $conexion->aniadirProducto();
 
         header('Location: /productos');
-        
     } else {
         echo 'Token Invalido';
     }
 }
-ob_end_flush();
+?>
+<div class="home__productos">
+    <?php echo "Hay un total de: " . $conexion->contarProductos(); ?>
+</div>
