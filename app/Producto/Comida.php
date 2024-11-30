@@ -7,6 +7,7 @@ use DateTime;
 
 class Comida extends Producto
 {
+    
     private DateTime $caducidad;
     function __construct(string $nombre_producto, float $precio_producto, DateTime $caducidad)
     {

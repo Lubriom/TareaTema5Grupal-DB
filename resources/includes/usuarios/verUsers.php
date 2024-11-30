@@ -1,11 +1,14 @@
 <?php
     // Aquí importaremos el modelo usuarios
     use App\Models\UsuarioModel;
+    use app\Gestion\Usuario;
 
+    $usuarios = [];
     $conexion = new UsuarioModel();
-    $usuarios =$conexion->all();
-    // $usuario = $conexion->find(2);
-    // echo $usuario;
+    foreach ($conexion->all() as $usuariosBD) {
+        $usuarios[] = new Usuario($usuariosBD['id'] ,$usuariosBD['nombre'],$usuariosBD['apellido'],$usuariosBD['edad']);
+    }
+
 ?>
 
 <table>
@@ -20,10 +23,10 @@
     
         foreach ($usuarios as $usuario) {
             echo "<tr>";
-            echo "<td>" . $usuario['id'] . "</td>";
-            echo "<td>" . $usuario['nombre'] . "</td>";
-            echo "<td>" . $usuario['apellido'] . "</td>";
-            echo "<td>" . $usuario['edad'] . "</td>";
+            echo "<td>" . $usuario->getId() . "</td>";
+            echo "<td>" . $usuario->getNombre() . "</td>";
+            echo "<td>" . $usuario->getApellido() . "</td>";
+            echo "<td>" . $usuario->getEdad() . "</td>";
             echo "</tr>";
         }
     ?>

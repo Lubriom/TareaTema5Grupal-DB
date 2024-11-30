@@ -11,7 +11,7 @@
     <div class="content">
         <main class="main">
             <div class="home__usuarios">
-                <h2>Insertar</h2>
+                <h2>Insertar Usuarios</h2>
                 <form method="post" action="/usuarios">
                     <?php require __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "includes" . DIRECTORY_SEPARATOR . "usuarios" . DIRECTORY_SEPARATOR . 'crearUsers.php'; ?>
                 </form>

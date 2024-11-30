@@ -66,12 +66,12 @@ if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $datosUsuario['edad'] = functionfiltrado($_POST['edad']);
 }
 
-$hayErrores = true;
+$hayErrores = false;
 foreach ($datosUsuario as $clave => $campo) {
     $erroresCampo = comprobarErrores($datosUsuario, $clave);
     $errores = array_merge($errores, $erroresCampo);
     if (!empty($errores[$clave])) {
-        $hayErrores = false;
+        $hayErrores = true;
     }
 }
 
@@ -116,12 +116,12 @@ foreach ($datosUsuario as $clave => $campo) {
 <?php
 
 //Se comprueba que hay errores y se procede insertar el usuario en la base de datos.
-if ($hayErrores) {
+if (!$hayErrores) {
     if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_POST['token'] == $_SESSION['token']) {
             $conexion = new UsuarioModel();
             $conexion->create($datosUsuario);
-            
+            header("Location: /usuarios");
         } else {
             echo 'Token Invalido';
         }
