@@ -12,6 +12,8 @@
     use App\Producto\Producto;
     use app\Producto\Ropa;
 
+    ob_start();
+
     $prodRopaModel = new ProductoModel();
     $prodElecModel = new ProductoModel();
     $prodComidaModel = new ProductoModel();
@@ -41,7 +43,7 @@
             echo "</div>
              <form class=\"form_carrito\" action=\"productos\" method=\"post\" enctype=\"multipart/form-data\"> 
             <input type=\"hidden\" name=\"producto_agregar\" value=" . $producto->getId() . ">
-            <input type=\"submit\" name=\"eliminar\" class=\"card__button\" value=\"Agregar al carrito\">
+            <input type=\"submit\" name=\"agregar\" class=\"card__button\" value=\"Agregar al carrito\">
             </input></form>
                 </div>";
         }
@@ -71,7 +73,7 @@
             echo "</div>
             <form class=\"form_carrito\" action=\"productos\" method=\"post\" enctype=\"multipart/form-data\"> 
         <input type=\"hidden\" name=\"producto_agregar\" value=" . $producto->getId() . ">
-        <input type=\"submit\" name=\"eliminar\" class=\"card__button\" value=\"Agregar al carrito\">
+        <input type=\"submit\" name=\"agregar\" class=\"card__button\" value=\"Agregar al carrito\">
         </input></form>
             </div>";
         }
@@ -100,7 +102,7 @@
             echo "</div>
                 <form class=\"form_carrito\" action=\"productos\" method=\"post\" enctype=\"multipart/form-data\"> 
             <input type=\"hidden\" name=\"producto_agregar\" value=" . $producto->getId() . ">
-            <input type=\"submit\" name=\"eliminar\" class=\"card__button\" value=\"Agregar al carrito\">
+            <input type=\"submit\" name=\"agregar\" class=\"card__button\" value=\"Agregar al carrito\">
             </input></form>
                 </div>";
         }
@@ -111,7 +113,7 @@
 
 <?php
 
-if (isset($_POST["eliminar"])) {
+if (isset($_POST["agregar"])) {
     $carrito = new Carrito();
 
     foreach ($productosRopa as $value) {
@@ -136,6 +138,5 @@ if (isset($_POST["eliminar"])) {
     if (isset($producto)) {
         $carrito->agregarProducto($producto);
     }
+    header("Location: /productos");
 }
-
-?>

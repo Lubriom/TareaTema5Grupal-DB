@@ -1,7 +1,5 @@
 <?php
 use App\Models\ProductoModel;
-use app\Models\UsuarioModel;
-ob_start();
 
 $conexion = new ProductoModel();
 
@@ -30,7 +28,7 @@ if (isset($_POST['transaccion'])) {
     if ($_POST['token'] == $_SESSION['token']) {
         $conexion->aniadirProducto();
 
-        // header('Location: /productos');
+        header('Location: /productos');
         
     } else {
         echo 'Token Invalido';
