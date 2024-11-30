@@ -6,16 +6,18 @@
     use App\Models\RopaModel;
     use App\Models\ElectronicoModel;
     use App\Models\ComidaModel;
-    use App\Models\Model;
     use app\Producto\Comida;
     use app\Producto\Electronico;
-    use App\Producto\Producto;
     use app\Producto\Ropa;
 
     $prodRopaModel = new ProductoModel();
     $prodElecModel = new ProductoModel();
     $prodComidaModel = new ProductoModel();
     $transaccionProducto = new ProductoModel();
+
+    if (empty($_SESSION['token'])) {
+        $_SESSION['token'] = bin2hex(random_bytes(32));
+    }
 
     ?>
     <h1 class="title">Sección de Ropa</h1>
