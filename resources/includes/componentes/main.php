@@ -37,7 +37,7 @@
             echo $producto->mostrarDescripcion();
             echo "</div>
                 <form class=\"form_carrito\" action=\"productos\" method=\"post\"> 
-                    <input type=\"hidden\" name=\"producto_id\" value=\"" . $value["id"]. "\">
+                    <input type=\"hidden\" name=\"producto_id\" value=\"" . $value["id"] . "\">
                     <input type=\"hidden\" name=\"producto_tipo\" value=\"ropa\">
                     <input type=\"submit\" name=\"agregar\" class=\"card__button\" value=\"Agregar al carrito\">
                 </form>
@@ -82,7 +82,7 @@
             ->join("electronico as electronico", "producto.id", "electronico.id_prod")
             ->get();
 
-       
+
         foreach ($productosElectronico as $value) {
             $producto = new Electronico($value["nombre"], $value["precio"], $value["modelo"]);
             $productosInstancias['electronico'][$value["id"]] = $producto;
@@ -124,3 +124,5 @@
 
         header("Location: /productos");
     }
+?>
+</div>
