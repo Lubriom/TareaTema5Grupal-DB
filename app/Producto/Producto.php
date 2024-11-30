@@ -2,6 +2,7 @@
 
 namespace app\Producto;
 
+
 abstract class Producto implements VendibleInterface
 {
     private static int $contador = 0;

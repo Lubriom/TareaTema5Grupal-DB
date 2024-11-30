@@ -6,6 +6,7 @@ use app\Producto\Electronico;
 use app\Producto\Producto;
 use app\Producto\Ropa;
 use app\Producto\Comida;
+use DateTime;
 
 class Carrito
 {
@@ -77,11 +78,12 @@ class Carrito
                 echo "<div class=\"producto\">
             <p>Nombre: " . $producto->getNombre() . "</p>";
                 if ($producto instanceof Ropa) {
-                    echo "<p>Talla:" . $producto->getTalla() . "</p>";
+                    echo "<p>Talla: " . $producto->getTalla() . "</p>";
                 } elseif ($producto instanceof Electronico) {
-                    echo "<p>Modelo:" . $producto->getModelo() . "</p>";
+                    echo "<p>Modelo: " . $producto->getModelo() . "</p>";
                 } elseif ($producto instanceof Comida) {
-                    echo "<p>Caducidad:" . $producto->getCaducidad() . "</p>";
+
+                    echo "<p>Caducidad: " . $producto->getCaducidad() . "</p>";
                 }
                 echo "<p>Precio: " . $producto->getPrecio() . "€</p>
                 <form class=\"form_carrito\" action=\"carrito\" method=\"post\" enctype=\"multipart/form-data\"> 
@@ -101,6 +103,5 @@ class Carrito
         } else {
             return count($_SESSION["productos"]);
         }
-        
     }
 }

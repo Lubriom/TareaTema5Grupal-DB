@@ -28,6 +28,7 @@ class Model
     private ?string $where = null;
     private array  $values = [];
     private ?string $orderBy = null;
+    private ?string $join = null;
 
     protected $table; // Definido en el hijo
 
@@ -44,6 +45,8 @@ class Model
     {
         //Conexión a la base de datos.
         try {
+            $this->query = null; // Consulta a ejecutar
+
             $dsn = "mysql:host={$this->db_host};dbname={$this->db_name}";
             $this->conex = new PDO($dsn, $this->db_user, $this->db_pass);
             $this->conex->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -60,12 +63,8 @@ class Model
     {
         try {
             $smtp = $this->conex->prepare($sql);
-            
-            if ($params !== null) {
-                $smtp->execute($data);
-            } else {
-                $smtp->execute();
-            }
+
+            $smtp->execute($data);
 
             $this->query = $smtp;
         } catch (Exception $e) {
@@ -96,7 +95,7 @@ class Model
         try {
             $sql = "SELECT * FROM " . $this->table;
             $this->query($sql);
-            return $this->getAll();
+            return $this->query->fetchAll(PDO::FETCH_ASSOC);
         } catch (Exception $e) {
             die('Error al obtener los registros: ' . $e->getMessage());
         }
@@ -107,9 +106,13 @@ class Model
     {
         try {
             if (empty($this->query)) {
-                $sql = "SELECT {$this->select} FROM {$this->table}";
+                $sql = "SELECT {$this->select} FROM `{$this->table}`";
 
                 // Se comprueban si están definidos para añadirlos a la cadena $sql
+                if ($this->join) {
+                    $sql .= " as {$this->table} INNER JOIN{$this->join}";
+                }
+
                 if ($this->where) {
                     $sql .= " WHERE {$this->where}";
                 }
@@ -126,11 +129,13 @@ class Model
         return $this->getAll();
     }
 
-    public function find($id)
+    public function find($id): array     
     {
         $sql = "SELECT * FROM {$this->table} WHERE id = ?";
 
-        $this->query($sql, [$id], 'i');
+        $this->query($sql, [$id], '?');
+
+        return $this->getAll();
     }
 
     // Se añade where a la sentencia con operador específico
@@ -207,6 +212,21 @@ class Model
         }
         return $this;
     }
+
+    public function join($table, $column1, $column2, $operator = "=", $chainType = 'ON')
+    {
+        try {
+            if ($this->join) {
+                $this->join .= " {$table} {$chainType} {$column1} {$operator} {$column2}";
+            } else {
+                $this->join = " {$table} {$chainType} {$column1} {$operator} {$column2}";
+            }
+        } catch (Exception $e) {
+            die('Error en el método JOIN: ' . $e->getMessage());
+        }
+        return $this;
+    }
+    
 
     public function delete($id)
     {
