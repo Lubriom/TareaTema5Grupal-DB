@@ -34,6 +34,7 @@ class Carrito
         foreach ($this->productos as $keys => $producto) {
             if ($id == $producto->getId()) {
                 unset($this->productos[$keys]);
+                break;
             }
         }
 
@@ -50,7 +51,7 @@ class Carrito
         $total = 0;
 
         foreach ($this->productos as $producto) {
-            $total += $producto->getPrecio();
+            $total += $producto->calcularPrecioIva();
         }
         return $total;
     }
@@ -85,7 +86,7 @@ class Carrito
 
                     echo "<p>Caducidad: " . $producto->getCaducidad() . "</p>";
                 }
-                echo "<p>Precio: " . $producto->getPrecio() . "€</p>
+                echo "<p>Precio con Iva: " . $producto->calcularPrecioIva() . "€</p>
                 <form class=\"form_carrito\" action=\"carrito\" method=\"post\" enctype=\"multipart/form-data\"> 
                 <input type=\"hidden\" name=\"csrf_token\" value=" . $_SESSION['csrf_token'] . ">
         <input type=\"hidden\" name=\"producto_eliminar\" value=" . $producto->getId() . ">
