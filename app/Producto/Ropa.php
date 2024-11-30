@@ -6,15 +6,19 @@ namespace app\Producto;
 class Ropa extends Producto 
 {
     private string $talla;
+    private int $id_ropa;
+    private static int $contador = 0;
 
     function __construct(private string $nombre_producto,private float $precio_procucto, string $talla)
     {
         parent::__construct($nombre_producto, $precio_procucto);
+        self::$contador++; 
+        $this->id_ropa = self::$contador;
         $this->talla = $talla;
     }
     public function mostrarDescripcion(): string
     {
-        return "<h1>{$this->getNombre()}</h1> <p>Talla: $this->talla</p> <p>Precio : {$this->getPrecio()} €</p>";
+        return "<h1>{$this->getNombre()}</h1> <p>Talla: $this->talla</p> <p>Precio sin Iva: {$this->getPrecio()} €</p>";
     }
 
 
@@ -24,6 +28,14 @@ class Ropa extends Producto
     public function getTalla(): string
     {
         return $this->talla;
+    }
+
+    /**
+     * Devuelve el valor del id de la ropa
+     */
+    public function getId_Ropa(): int
+    {
+        return $this->id_ropa;
     }
 
     /**
