@@ -29,15 +29,17 @@
             ->get(); // Ejecutamos la consulta
 
         foreach ($productosRopa as $value) {
-            $value["id"] = new Ropa($value["nombre"], $value["precio"], $value["talla"]);
+            $producto = new Ropa($value["nombre"], $value["precio"], $value["talla"]);
+            $productosInstancias['ropa'][$value["id"]] = $producto;
+
 
             echo "
             <div class=\"card__producto\">
             <div class=\"card__title\">";
-            echo $value["id"]->mostrarDescripcion();
+            echo $producto->mostrarDescripcion();
             echo "</div>
              <form class=\"form_carrito\" action=\"productos\" method=\"post\" enctype=\"multipart/form-data\"> 
-            <input type=\"hidden\" name=\"producto_agregar\" value=" . $value["id"]->getId() . ">
+            <input type=\"hidden\" name=\"producto_agregar\" value=" . $producto->getId() . ">
             <input type=\"submit\" name=\"eliminar\" class=\"card__button\" value=\"Agregar al carrito\">
             </input></form>
                 </div>";
@@ -57,15 +59,17 @@
 
         foreach ($productosComida as $value) {
             $caducidad = new DateTime($value["caducidad"]);
-            $value["id"] = new Comida($value["nombre"], $value["precio"], $caducidad);
+            $producto = new Comida($value["nombre"], $value["precio"], $caducidad);
+            $productosInstancias['comida'][$value["id"]] = $producto;
+
 
             echo "
             <div class=\"card__producto\">
             <div class=\"card__title\">";
-            echo $value["id"]->mostrarDescripcion();
+            echo $producto->mostrarDescripcion();
             echo "</div>
             <form class=\"form_carrito\" action=\"productos\" method=\"post\" enctype=\"multipart/form-data\"> 
-        <input type=\"hidden\" name=\"producto_agregar\" value=" . $value["id"]->getId() . ">
+        <input type=\"hidden\" name=\"producto_agregar\" value=" . $producto->getId() . ">
         <input type=\"submit\" name=\"eliminar\" class=\"card__button\" value=\"Agregar al carrito\">
         </input></form>
             </div>";
@@ -85,15 +89,16 @@
             ->get(); // Ejecutamos la consulta
 
         foreach ($productosElectronico as $value) {
-            $value["id"] = new Electronico($value["nombre"], $value["precio"], $value["modelo"]);
+            $producto = new Electronico($value["nombre"], $value["precio"], $value["modelo"]);
+            $productosInstancias['electronico'][$value["id"]] = $producto;
 
             echo "
                 <div class=\"card__producto\">
                 <div class=\"card__title\">";
-            echo $value["id"]->mostrarDescripcion();
+            echo $producto->mostrarDescripcion();
             echo "</div>
                 <form class=\"form_carrito\" action=\"productos\" method=\"post\" enctype=\"multipart/form-data\"> 
-            <input type=\"hidden\" name=\"producto_agregar\" value=" . $value["id"]->getId() . ">
+            <input type=\"hidden\" name=\"producto_agregar\" value=" . $producto->getId() . ">
             <input type=\"submit\" name=\"eliminar\" class=\"card__button\" value=\"Agregar al carrito\">
             </input></form>
                 </div>";
@@ -110,20 +115,20 @@ if (isset($_POST["eliminar"])) {
 
     foreach ($productosRopa as $value) {
         if ($value["id"] == $_POST["producto_agregar"]) {
-            $producto = new Ropa($value["nombre"], $value["precio"], $value["talla"]);
+            $producto = $productosInstancias['ropa'][$value["id"]];
         }
     }
 
     foreach ($productosComida as $value) {
         if ($value["id"] == $_POST["producto_agregar"]) {
             $caducidad = new DateTime($value["caducidad"]);
-            $producto = new Comida($value["nombre"], $value["precio"], $caducidad);
+            $producto = $productosInstancias['comida'][$value["id"]];
         }
     }
 
     foreach ($productosElectronico as $value) {
         if ($value["id"] == $_POST["producto_agregar"]) {
-            $producto = new Electronico($value["nombre"], $value["precio"], $value["modelo"]);
+            $producto = $productosInstancias['electronico'][$value["id"]];
         }
     }
 
