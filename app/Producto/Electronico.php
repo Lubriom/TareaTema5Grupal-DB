@@ -5,15 +5,10 @@ namespace app\Producto;
 
 class Electronico extends Producto
 {
-    private string $modelo;
-    private int $id_elect;
-    private static int $contador = 0;
-    function __construct(private string $nombre_producto, private string $precio_producto, string $modelo)
+
+    function __construct(private int $id_producto, private string $nombre_producto, private string $precio_producto, private string $modelo, private int $id_elect)
     {
-        parent::__construct($nombre_producto, $precio_producto);
-        self::$contador++;
-        $this->id_elect = self::$contador;
-        $this->modelo = $modelo;
+        parent::__construct($id_producto,$nombre_producto, $precio_producto);
     }
     public function mostrarDescripcion(): string
     {

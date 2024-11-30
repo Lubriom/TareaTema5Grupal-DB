@@ -5,16 +5,11 @@ namespace app\Producto;
 
 class Ropa extends Producto 
 {
-    private string $talla;
-    private int $id_ropa;
-    private static int $contador = 0;
 
-    function __construct(private string $nombre_producto,private float $precio_procucto, string $talla)
+    function __construct(private int $id_producto, private string $nombre_producto,private float $precio_procucto,private string $talla, private int $id_ropa)
     {
-        parent::__construct($nombre_producto, $precio_procucto);
-        self::$contador++; 
-        $this->id_ropa = self::$contador;
-        $this->talla = $talla;
+        parent::__construct($id_producto, $nombre_producto, $precio_procucto);
+    
     }
     public function mostrarDescripcion(): string
     {

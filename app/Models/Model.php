@@ -68,7 +68,7 @@ class Model
     {
         try {
             $smtp = $this->conex->prepare($sql);
-            
+
             $smtp->execute($data);
             $this->query = $smtp;
         } catch (Exception $e) {

@@ -23,25 +23,15 @@
     <div class="seccion-ropa">
         <?php
         $productosRopa = $prodRopaModel
-            ->select("producto.*", "ropa.talla")
+            ->select("producto.*", "ropa.talla", "ropa.id_ropa")
             ->join("ropa as ropa", "producto.id", "ropa.id_prod")
             ->get();
 
         foreach ($productosRopa as $value) {
-            $producto = new Ropa($value["nombre"], $value["precio"], $value["talla"]);
+            $producto = new Ropa($value["id"], $value["nombre"], $value["precio"], $value["talla"], $value["id_ropa"]);
             $productosInstancias['ropa'][$value["id"]] = $producto;
 
-            echo "
-            <div class=\"card__producto\">
-                <div class=\"card__title\">";
-            echo $producto->mostrarDescripcion();
-            echo "</div>
-                <form class=\"form_carrito\" action=\"productos\" method=\"post\"> 
-                    <input type=\"hidden\" name=\"producto_id\" value=\"" . $value["id"] . "\">
-                    <input type=\"hidden\" name=\"producto_tipo\" value=\"ropa\">
-                    <input type=\"submit\" name=\"agregar\" class=\"card__button\" value=\"Agregar al carrito\">
-                </form>
-            </div>";
+            require 'contenido_ropa.php';
         }
         ?>
     </div>
@@ -50,26 +40,16 @@
     <div class="seccion-ropa">
         <?php
         $productosComida = $prodComidaModel
-            ->select("producto.*", "comida.caducidad")
+            ->select("producto.*", "comida.caducidad", "comida.id_comida")
             ->join("comida as comida", "producto.id", "comida.id_prod")
             ->get();
 
         foreach ($productosComida as $value) {
             $caducidad = new DateTime($value["caducidad"]);
-            $producto = new Comida($value["nombre"], $value["precio"], $caducidad);
+            $producto = new Comida($value["id"], $value["nombre"], $value["precio"], $caducidad, $value["id_comida"]);
             $productosInstancias['comida'][$value["id"]] = $producto;
 
-            echo "
-            <div class=\"card__producto\">
-                <div class=\"card__title\">";
-            echo $producto->mostrarDescripcion();
-            echo "</div>
-                <form class=\"form_carrito\" action=\"productos\" method=\"post\"> 
-                    <input type=\"hidden\" name=\"producto_id\" value=\"" . $value["id"] . "\">
-                    <input type=\"hidden\" name=\"producto_tipo\" value=\"comida\">
-                    <input type=\"submit\" name=\"agregar\" class=\"card__button\" value=\"Agregar al carrito\">
-                </form>
-            </div>";
+            require 'contenido_comida.php';
         }
         ?>
     </div>
@@ -78,44 +58,57 @@
     <div class="seccion-ropa">
         <?php
         $productosElectronico = $prodElecModel
-            ->select("producto.*", "electronico.modelo")
+            ->select("producto.*", "electronico.modelo", "electronico.id_elect")
             ->join("electronico as electronico", "producto.id", "electronico.id_prod")
             ->get();
 
 
         foreach ($productosElectronico as $value) {
-            $producto = new Electronico($value["nombre"], $value["precio"], $value["modelo"]);
+            $producto = new Electronico($value["id"], $value["nombre"], $value["precio"], $value["modelo"], $value["id_elect"]);
             $productosInstancias['electronico'][$value["id"]] = $producto;
-            echo "
-            <div class=\"card__producto\">
-                <div class=\"card__title\">";
-            echo $producto->mostrarDescripcion();
-            echo "</div>
-                <form class=\"form_carrito\" action=\"productos\" method=\"post\"> 
-                    <input type=\"hidden\" name=\"producto_id\" value=\"" . $value["id"] . "\">
-                    <input type=\"hidden\" name=\"producto_tipo\" value=\"electronico\">
-                    <input type=\"submit\" name=\"agregar\" class=\"card__button\" value=\"Agregar al carrito\">
-                </form>
-            </div>";
+
+            require 'contenido_electronico.php';
         }
         ?>
     </div>
-
 
     <?php
 
     if (isset($_POST["agregar"])) {
         $carrito = new Carrito();
+        $productosModel = new ProductoModel();
+        $subqueryRopa = new RopaModel();
+        $subqueryComida = new ComidaModel();
+        $subqueryElectronico = new ElectronicoModel();
 
         $tipo = $_POST["producto_tipo"];
         $id = $_POST["producto_id"];
 
         if ($tipo === 'ropa' && isset($productosInstancias['ropa'][$id])) {
-            $producto = $productosInstancias['ropa'][$id];
+
+            $id_ropa = $_POST["ropa_id"];
+            $subConsulta = $subqueryRopa->select("*")->where("ropa.id_ropa", $id_ropa)->get();
+            $producto = $productosModel->select("producto.*")->where("id", $subConsulta[0]["id_prod"])->get();
+            $ropa = new Ropa($producto[0]["id"], $producto[0]["nombre"], $producto[0]["precio"], $subConsulta[0]["talla"], $subConsulta[0]["id_ropa"]);
+
+            $producto = $ropa;
         } elseif ($tipo === 'comida' && isset($productosInstancias['comida'][$id])) {
-            $producto = $productosInstancias['comida'][$id];
+            
+            $id_comida = $_POST["comida_id"];
+            $subConsulta = $subqueryComida->select("*")->where("comida.id_comida", $id_comida)->get();
+            $caducidad = new DateTime($subConsulta[0]["caducidad"]);
+            $producto = $productosModel->select("producto.*")->where("id", $subConsulta[0]["id_prod"])->get();
+            $ropa = new Comida($producto[0]["id"], $producto[0]["nombre"], $producto[0]["precio"], $caducidad, $subConsulta[0]["id_comida"]);
+
+            $producto = $ropa;
         } elseif ($tipo === 'electronico' && isset($productosInstancias['electronico'][$id])) {
-            $producto = $productosInstancias['electronico'][$id];
+           
+            $id_electronico = $_POST["electronico_id"];
+            $subConsulta = $subqueryElectronico->select("*")->where("electronico.id_elect", $id_electronico)->get();
+            $producto = $productosModel->select("producto.*")->where("id", $subConsulta[0]["id_prod"])->get();
+            $ropa = new Electronico($producto[0]["id"], $producto[0]["nombre"], $producto[0]["precio"], $subConsulta[0]["modelo"], $subConsulta[0]["id_elect"]);
+
+            $producto = $ropa;
         }
 
         if (isset($producto)) {
@@ -124,5 +117,5 @@
 
         header("Location: /productos");
     }
-?>
+    ?>
 </div>

@@ -94,7 +94,7 @@ class Carrito
                 }
                 echo "<p>Precio con Iva: " . $producto->calcularPrecioIva() . "€</p>
                 <form class=\"form_carrito\" action=\"carrito\" method=\"post\" enctype=\"multipart/form-data\"> 
-                <input type=\"hidden\" name=\"csrf_token\" value=" . $_SESSION['csrf_token'] . ">
+                <input type=\"hidden\" name=\"token\" value=" . $_SESSION['token'] . ">
         <input type=\"hidden\" name=\"producto_eliminar\" value=" . $producto->getId() . ">
             <input type=\"submit\" name=\"eliminar\" class=\"button\" value=\"Eliminar\">
             </input></form>

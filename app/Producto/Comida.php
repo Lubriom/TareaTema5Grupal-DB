@@ -7,16 +7,11 @@ use DateTime;
 class Comida extends Producto
 {
 
-    private DateTime $caducidad;
-    private int $id_comida;
-    private static int $contador = 0;
     // Constructor
-    function __construct(private string $nombre_producto, private float $precio_producto, DateTime $caducidad)
+    function __construct(private int $id_producto, private string $nombre_producto, private float $precio_producto, private DateTime $caducidad, private int $id_comida)
     {
-        parent::__construct($nombre_producto, $precio_producto);
-        self::$contador++;
-        $this->id_comida = self::$contador;
-        $this->caducidad = $caducidad; // Aquí se corrigió el error de asignación
+        parent::__construct($id_producto,$nombre_producto, $precio_producto);
+     
     }
 
     // Método para mostrar la descripción

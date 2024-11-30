@@ -48,7 +48,7 @@ if (isset($_POST['eliminar']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $datosUsuario['descuento'] = functionfiltrado($_POST['descuento']);
 
     foreach ($datosUsuario as $clave => $campo) {
-        $erroresCampo = comprobarErroresDel($datosUsuario, $clave);
+        $erroresCampo = comprobarErrores($datosUsuario, $clave);
         $errores = array_merge($errores, $erroresCampo);
         if (!empty($errores[$clave])) {
             $hayErrores = true;
@@ -59,13 +59,13 @@ if (isset($_POST['eliminar']) && $_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <!-- Transacción y Procedimientos -->
-<div class="home__productos">
+<div class="home__procedimientos">
     <h1 class="title">Transacción y Procedimientos</h1>
 
     <!-- Transacción -->
     <div class="seccion-tran">
         <h3 class="title">Ejemplo de Transacción</h3>
-        <form method="post" action="/productos">
+        <form class="form" method="post" action="/productos">
             <input type="hidden" id="token" name="token" value="<?php echo $_SESSION['token']; ?>">
             <input class="button__alt" type="submit" id="transaccion" name="transaccion" value="Realizar transacción">
         </form>
@@ -73,14 +73,15 @@ if (isset($_POST['eliminar']) && $_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Primer Procedimiento -->
     <div class="seccion-prod1">
-        <h3 class="title">Ejemplo de Transacción</h3>
-        <?php echo "Hay un total de: " . $conexion->contarProductos(); ?>
+        <h3 class="title">Ejemplo de Procedimiento OUT</h3>
+        <p class="title"><?php echo "Hay un total de: " . $conexion->contarProductos(); ?></p>
     </div>
 
     <!-- Segundo Procedimiento -->
     <div class="seccion-prod2">
-        <p>Calcular descuento del producto</p>
-        <form action="productos" method="post">
+        <h3 class="title">Ejemplo de procedimiento IN-OUT</h3>
+        <h3 class="title"> - Calcular descuento del producto</h3>
+        <form class="form form-center" action="productos" method="post">
             <label for="id">Introducir ID</label>
             <input type="text" id="id" name="id">
             <label for="descuento">Introducir Descuento</label>

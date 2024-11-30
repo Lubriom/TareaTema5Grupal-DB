@@ -50,7 +50,7 @@ body{
     background-color: slategray;
     padding: 10px 30px;
     border-radius: 50px;
-    border: none;
+    border: 1px solid slategray;
     color: white;
     font-size: 18px;
     text-decoration: none;
@@ -132,6 +132,29 @@ body{
     margin: 10px;
 }
 
+.seccion-tran{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.title{
+    width: 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form{
+    width: 50%;
+}
+
+.form-center{
+    margin:  20px auto;
+}
+
+.seccion-prod2{
+    height: 225px;
+}
 
 .seccion-ropa{
     display: flex;
@@ -266,6 +289,20 @@ label{
 }
 
 .table__usuarios{
+    background-color: slategray;
+    display: flex;
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
+    color: white;
+    column-gap: 10px;
+    row-gap: 10px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.home__procedimientos{
     background-color: slategray;
     display: flex;
     width: 100%;
