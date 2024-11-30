@@ -1,7 +1,7 @@
 <?php
 
 namespace app\Producto;
-
+use app\Gestion\Descuento;
 
 abstract class Producto implements VendibleInterface
 {
@@ -18,6 +18,7 @@ abstract class Producto implements VendibleInterface
         $this->precio_producto = $precio_producto;
     }
     abstract public function mostrarDescripcion(): string;
+
 
     public function calcularPrecioIva(): float
     {

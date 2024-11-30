@@ -6,10 +6,6 @@ class Usuario
 {
     public function __construct(private Int $id, private String $nombre, private String $apellido, private Int $edad)
     {
-        $this->id = $id;
-        $this->nombre = $nombre;
-        $this->apellido = $apellido;
-        $this->edad = $edad;
     }
 
     /**

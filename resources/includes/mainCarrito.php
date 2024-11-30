@@ -6,6 +6,8 @@ use app\Producto\Ropa;
 
 $carrito = new Carrito();
 
+
+
 /**
  * Funcion que sirve para comprobar y filtrar los valores que se han recibido de un formulario
  */
@@ -24,7 +26,7 @@ function filtrado(String $datos): string
     <div class="productos">
 
         <?php
- 
+
         if (isset($_POST["eliminar"])) {
             $csrf_token = isset($_POST['csrf_token']) ? filtrado($_POST['csrf_token']) : '';
             if ($csrf_token !== $_SESSION['csrf_token']) {
@@ -48,8 +50,16 @@ function filtrado(String $datos): string
     </div>
     <div class="opciones">
         <div class="control">
+            <?php
+
+            $descuentoTotal = 10;
+            $precioTotal = $carrito->calcularTotal();
+
+            ?>
             <p>Cantidad de productos: <?php echo $carrito->getCantidad() ?></p>
             <p>Precio Total: <?php echo $carrito->calcularTotal() ?> €</p>
+            <p>Descuento: <?php echo $descuentoTotal ?>%</p>
+            <p>Precio con descuento: <?php echo $carrito->aplicarDescuento($precioTotal, $descuentoTotal) ?> €</p>
         </div>
         <div class="botones">
             <form action="carrito" method="post" enctype="multipart/form-data">

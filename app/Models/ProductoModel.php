@@ -21,7 +21,7 @@ class ProductoModel extends Model
     // protected $db_pass = '';
     // protected $db_name = 'mvc_database'; 
 
-    function aniadirProducto() : void
+    function aniadirProducto(): void
     {
 
         try {
@@ -42,21 +42,49 @@ class ProductoModel extends Model
         }
     }
 
-    function contarProductos() : Int
+    function contarProductos(): Int
     {
         try {
             $conex = $this->getConnection();
-            
+
             $resultado = $conex->prepare('CALL contar_productos (@totalProductos)');
             $resultado->execute();
 
             $resultado->closeCursor();
             $resultado = $conex->query("SELECT @totalProductos AS total");
-            $totalProductos = $resultado->fetchColumn(); 
+            $totalProductos = $resultado->fetchColumn();
 
             return $totalProductos;
         } catch (Exception $e) {
             die("Error al contar los productos: " . $e->getMessage());
+        }
+    }
+    function calcular_precio_con_descuento(float $precio, float $descuento): string|float
+    {
+        try {
+            $conex = $this->getConnection();
+
+
+            // Llamada al procedimiento
+            $sql = 'CALL calcular_precio_con_descuento(:precio, :descuento, @precioFinal)';
+            $result = $conex->prepare($sql);
+            $result->bindParam(':precio', $precio);
+            $result->bindParam(':descuento', $descuento);
+            $result->execute();
+
+            $result->closeCursor();
+
+            $result = $conex->query('SELECT @precioFinal AS precioFinal');
+            $precioFinal = $result->fetchColumn();
+
+            if ($precioFinal === null) {
+                return "El descuento proporcionado no es válido.";
+            } else {
+
+                return $precioFinal;
+            }
+        } catch (Exception $e) {
+            die("Error al calcular el precio con descuento: " . $e->getMessage());
         }
     }
 }

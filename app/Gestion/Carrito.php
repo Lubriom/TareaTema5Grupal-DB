@@ -6,6 +6,8 @@ use app\Producto\Electronico;
 use app\Producto\Producto;
 use app\Producto\Ropa;
 use app\Producto\Comida;
+use app\Gestion\Descuento;
+
 use DateTime;
 
 class Carrito
@@ -42,6 +44,10 @@ class Carrito
 
         $_SESSION["productos"] = $this->productos;
     }
+
+    //Se aplica el trait Descuento
+    use Descuento;
+
 
     /**
      * Calcula el total de precios de los productos agregados al carrito
