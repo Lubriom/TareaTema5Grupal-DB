@@ -77,47 +77,51 @@
     <?php
 
     if (isset($_POST["agregar"])) {
-        $carrito = new Carrito();
-        $productosModel = new ProductoModel();
-        $subqueryRopa = new RopaModel();
-        $subqueryComida = new ComidaModel();
-        $subqueryElectronico = new ElectronicoModel();
+        if ($_POST['token'] == $_SESSION['token']) {
+            $carrito = new Carrito();
+            $productosModel = new ProductoModel();
+            $subqueryRopa = new RopaModel();
+            $subqueryComida = new ComidaModel();
+            $subqueryElectronico = new ElectronicoModel();
 
-        $tipo = $_POST["producto_tipo"];
-        $id = $_POST["producto_id"];
+            $tipo = $_POST["producto_tipo"];
+            $id = $_POST["producto_id"];
 
-        if ($tipo === 'ropa' && isset($productosInstancias['ropa'][$id])) {
+            if ($tipo === 'ropa' && isset($productosInstancias['ropa'][$id])) {
 
-            $id_ropa = $_POST["ropa_id"];
-            $subConsulta = $subqueryRopa->select("*")->where("ropa.id_ropa", $id_ropa)->get();
-            $producto = $productosModel->select("producto.*")->where("id", $subConsulta[0]["id_prod"])->get();
-            $ropa = new Ropa($producto[0]["id"], $producto[0]["nombre"], $producto[0]["precio"], $subConsulta[0]["talla"], $subConsulta[0]["id_ropa"]);
+                $id_ropa = $_POST["ropa_id"];
+                $subConsulta = $subqueryRopa->select("*")->where("ropa.id_ropa", $id_ropa)->get();
+                $producto = $productosModel->select("producto.*")->where("id", $subConsulta[0]["id_prod"])->get();
+                $ropa = new Ropa($producto[0]["id"], $producto[0]["nombre"], $producto[0]["precio"], $subConsulta[0]["talla"], $subConsulta[0]["id_ropa"]);
 
-            $producto = $ropa;
-        } elseif ($tipo === 'comida' && isset($productosInstancias['comida'][$id])) {
-            
-            $id_comida = $_POST["comida_id"];
-            $subConsulta = $subqueryComida->select("*")->where("comida.id_comida", $id_comida)->get();
-            $caducidad = new DateTime($subConsulta[0]["caducidad"]);
-            $producto = $productosModel->select("producto.*")->where("id", $subConsulta[0]["id_prod"])->get();
-            $ropa = new Comida($producto[0]["id"], $producto[0]["nombre"], $producto[0]["precio"], $caducidad, $subConsulta[0]["id_comida"]);
+                $producto = $ropa;
+            } elseif ($tipo === 'comida' && isset($productosInstancias['comida'][$id])) {
 
-            $producto = $ropa;
-        } elseif ($tipo === 'electronico' && isset($productosInstancias['electronico'][$id])) {
-           
-            $id_electronico = $_POST["electronico_id"];
-            $subConsulta = $subqueryElectronico->select("*")->where("electronico.id_elect", $id_electronico)->get();
-            $producto = $productosModel->select("producto.*")->where("id", $subConsulta[0]["id_prod"])->get();
-            $ropa = new Electronico($producto[0]["id"], $producto[0]["nombre"], $producto[0]["precio"], $subConsulta[0]["modelo"], $subConsulta[0]["id_elect"]);
+                $id_comida = $_POST["comida_id"];
+                $subConsulta = $subqueryComida->select("*")->where("comida.id_comida", $id_comida)->get();
+                $caducidad = new DateTime($subConsulta[0]["caducidad"]);
+                $producto = $productosModel->select("producto.*")->where("id", $subConsulta[0]["id_prod"])->get();
+                $ropa = new Comida($producto[0]["id"], $producto[0]["nombre"], $producto[0]["precio"], $caducidad, $subConsulta[0]["id_comida"]);
 
-            $producto = $ropa;
+                $producto = $ropa;
+            } elseif ($tipo === 'electronico' && isset($productosInstancias['electronico'][$id])) {
+
+                $id_electronico = $_POST["electronico_id"];
+                $subConsulta = $subqueryElectronico->select("*")->where("electronico.id_elect", $id_electronico)->get();
+                $producto = $productosModel->select("producto.*")->where("id", $subConsulta[0]["id_prod"])->get();
+                $ropa = new Electronico($producto[0]["id"], $producto[0]["nombre"], $producto[0]["precio"], $subConsulta[0]["modelo"], $subConsulta[0]["id_elect"]);
+
+                $producto = $ropa;
+            }
+
+            if (isset($producto)) {
+                $carrito->agregarProducto($producto);
+            }
+
+            header("Location: /productos");
+        } else {
+            die('Token CSRF inválido');
         }
-
-        if (isset($producto)) {
-            $carrito->agregarProducto($producto);
-        }
-
-        header("Location: /productos");
     }
     ?>
 </div>
