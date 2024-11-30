@@ -15,10 +15,10 @@ use PDOStatement;
 
 class Model
 {
-    private string $db_host = '127.0.0.1';
-    private string $db_user = 'root'; // Las credenciales se deben guardar en un archivo .env
-    private string $db_pass = '';
-    private string $db_name = 'tarea_tema5';
+    private string $db_host;
+    private string $db_user;
+    private string $db_pass;
+    private string $db_name;
 
     private ?PDO $conex = null;
 
@@ -34,6 +34,11 @@ class Model
 
     public function __construct()
     {
+        $this->db_host = $_ENV['DB_HOST'];
+        $this->db_user = $_ENV['DB_USER'];
+        $this->db_pass = $_ENV['DB_PASS'];
+        $this->db_name = $_ENV['DB_NAME'];
+
         try {
             $this->connection();
         } catch (Exception $e) {
@@ -120,7 +125,7 @@ class Model
                 if ($this->orderBy) {
                     $sql .= " ORDER BY {$this->orderBy}";
                 }
-
+                
                 $this->query($sql, $this->values);
             }
         } catch (Exception $e) {
@@ -232,7 +237,6 @@ class Model
     {
         try {
             $sql = "DELETE FROM {$this->table} WHERE id = ?";
-
             $this->query($sql, [$id], 'i');
         } catch (Exception $e) {
             die('Error al eliminar el registro: ' . $e->getMessage());

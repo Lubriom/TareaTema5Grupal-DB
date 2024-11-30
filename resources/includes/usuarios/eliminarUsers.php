@@ -1,4 +1,9 @@
 <?php
+
+use app\Models\UsuarioModel;
+
+$conexion = new UsuarioModel();
+
 if (empty($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(random_bytes(32));
 }
@@ -10,6 +15,8 @@ $errores = [];
  */
 function comprobarErroresDel(array $datos, string $tipoCampo): array
 {
+    $conexion = new UsuarioModel();
+    $usuario = $conexion->find($datos[$tipoCampo]);
     $errores = [];
     switch ($tipoCampo) {
         case 'id':
@@ -17,8 +24,10 @@ function comprobarErroresDel(array $datos, string $tipoCampo): array
                 $errores[$tipoCampo] = "Por favor rellene el campo";
             } else if (!preg_match("/^[\d]{1,}$/", $datos[$tipoCampo])) {
                 $errores[$tipoCampo] = "Sólo se puede ingresar números.";
-            }   // IMPORTANTE -> Aquí se comprueba si el id existe en la base de datos - hace falta añadir
-            
+            } else if (empty($usuario)) {
+                $errores[$tipoCampo] = "No existe un usuario con este ID";
+            }
+
             break;
     }
     return $errores;
@@ -26,17 +35,17 @@ function comprobarErroresDel(array $datos, string $tipoCampo): array
 
 
 //Se filran los datos del input
+$hayErrores = false;
 $datosUsuario = [];
 if (isset($_POST['eliminar']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $datosUsuario['id'] = functionfiltrado($_POST['id']);
-}
 
-$hayErrores = true;
-foreach ($datosUsuario as $clave => $campo) {
-    $erroresCampo = comprobarErroresMod($datosUsuario, $clave);
-    $errores = array_merge($errores, $erroresCampo);
-    if (!empty($errores[$clave])) {
-        $hayErrores = false;
+    foreach ($datosUsuario as $clave => $campo) {
+        $erroresCampo = comprobarErroresDel($datosUsuario, $clave);
+        $errores = array_merge($errores, $erroresCampo);
+        if (!empty($errores[$clave])) {
+            $hayErrores = true;
+        }
     }
 }
 
@@ -44,7 +53,7 @@ foreach ($datosUsuario as $clave => $campo) {
 
 <div class="form__column">
     <div class="form__dato">
-        <label>ID</label>
+        <label>ID del usuario a modificar</label>
         <input type="text" id="id" name="id">
     </div>
     <?php if (isset($errores['id'])): ?>
@@ -59,17 +68,17 @@ foreach ($datosUsuario as $clave => $campo) {
 <?php
 
 //Se comprueba que hay errores y se procede a eliminar el usuario en la base de datos.
-if ($hayErrores) {
+if (!$hayErrores) {
     if (isset($_POST['eliminar']) && $_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_POST['token'] == $_SESSION['token']) {
-            //Se muestran los datos sanitizados --> Importante: Sustituir esto por un delete en la base de datos
-            echo 'Token Correcto<br>';
-            foreach ($datosUsuario as $clave => $campo) {
-                echo $clave . ": " . $campo . "<br>";
-            }
+            $conexion->delete($datosUsuario['id']);
+
+            header('Location: /usuarios');
+
         } else {
             echo 'Token Invalido';
         }
     }
 }
-?>
+exit();
+ob_end_flush();

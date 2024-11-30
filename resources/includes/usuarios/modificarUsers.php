@@ -1,15 +1,22 @@
 <?php
+use App\Models\UsuarioModel;
+ob_start();
+
+$conexion = new UsuarioModel();
+
+$errores = [];
+
 if (empty($_SESSION['token'])) {
     $_SESSION['token'] = bin2hex(random_bytes(32));
 }
-
-$errores = [];
 
 /**
  * Método para comprobar los datos de un campo
  */
 function comprobarErroresMod(array $datos, string $tipoCampo): array
 {
+    $conexion = new UsuarioModel();
+    $usuario = $conexion->find($datos[$tipoCampo]);
     $errores = [];
     switch ($tipoCampo) {
         case 'id':
@@ -17,8 +24,10 @@ function comprobarErroresMod(array $datos, string $tipoCampo): array
                 $errores[$tipoCampo] = "Por favor rellene el campo";
             } else if (!preg_match("/^[\d]{1,}$/", $datos[$tipoCampo])) {
                 $errores[$tipoCampo] = "Sólo se puede ingresar números.";
-            }   // IMPORTANTE -> Aquí se comprueba si el id existe en la base de datos - hace falta añadir
-            
+            } else if (empty($usuario)) {
+                $errores[$tipoCampo] = "No existe un usuario con este ID";
+            }
+
             break;
         case 'nombre':
             if (empty($datos[$tipoCampo])) {
@@ -27,14 +36,7 @@ function comprobarErroresMod(array $datos, string $tipoCampo): array
                 $errores[$tipoCampo] = "Sólo puede estar formado por letras y tener una longitud máxima de 20 caracteres.";
             }
             break;
-        case 'apellido1':
-            if (empty($datos[$tipoCampo])) {
-                $errores[$tipoCampo] = "Por favor rellene el campo";
-            } else if (!preg_match("/^[a-z A-Z]{0,20}$/", $datos[$tipoCampo])) {
-                $errores[$tipoCampo] = "Sólo puede estar formado por letras y tener una longitud máxima de 20 caracteres.";
-            }
-            break;
-        case 'apellido2':
+        case 'apellido':
             if (empty($datos[$tipoCampo])) {
                 $errores[$tipoCampo] = "Por favor rellene el campo";
             } else if (!preg_match("/^[a-z A-Z]{0,20}$/", $datos[$tipoCampo])) {
@@ -54,27 +56,24 @@ function comprobarErroresMod(array $datos, string $tipoCampo): array
 
 
 //Se filran los datos del input
+$hayErrores = false;
 $datosUsuario = [];
 if (isset($_POST['modificar']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $datosUsuario['id'] = functionfiltrado($_POST['id']);
     $datosUsuario['nombre'] = functionfiltrado($_POST['nombre']);
     $datosUsuario['nombre'] = ucfirst($datosUsuario['nombre']);
-    $datosUsuario['apellido1'] = functionfiltrado($_POST['apellido1']);
-    $datosUsuario['apellido1'] = ucfirst($datosUsuario['apellido1']);
-    $datosUsuario['apellido2'] = functionfiltrado($_POST['apellido2']);
-    $datosUsuario['apellido2'] = ucfirst($datosUsuario['apellido2']);
+    $datosUsuario['apellido'] = functionfiltrado($_POST['apellido']);
+    $datosUsuario['apellido'] = ucfirst($datosUsuario['apellido']);
     $datosUsuario['edad'] = functionfiltrado($_POST['edad']);
-}
 
-$hayErrores = true;
-foreach ($datosUsuario as $clave => $campo) {
-    $erroresCampo = comprobarErroresMod($datosUsuario, $clave);
-    $errores = array_merge($errores, $erroresCampo);
-    if (!empty($errores[$clave])) {
-        $hayErrores = false;
+    foreach ($datosUsuario as $clave => $campo) {
+        $erroresCampo = comprobarErroresMod($datosUsuario, $clave);
+        $errores = array_merge($errores, $erroresCampo);
+        if (!empty($errores[$clave])) {
+            $hayErrores = true;
+        }
     }
 }
-
 ?>
 
 <div class="form__column">
@@ -95,29 +94,18 @@ foreach ($datosUsuario as $clave => $campo) {
     </div>
     <?php if (isset($errores['nombre'])): ?>
         <p class="error"><?php echo $errores['nombre']; ?></p>
-    <?php elseif (!isset($errores['nombre'])) : ?>
+    <?php elseif (!isset($errores['id'])) : ?>
         <span></span>
     <?php endif; ?>
 </div>
 <div class="form__column">
     <div class="form__dato">
-        <label>Primer Apellido</label>
-        <input type="text" id="apellido1" name="apellido1">
+        <label>Apellido</label>
+        <input type="text" id="apellido" name="apellido">
     </div>
-    <?php if (isset($errores['apellido1'])): ?>
-        <p class="error"><?php echo $errores['apellido1']; ?></p>
-    <?php elseif (!isset($errores['apellido1'])) : ?>
-        <span></span>
-    <?php endif; ?>
-</div>
-<div class="form__column">
-    <div class="form__dato">
-        <label>Segundo Apellido</label>
-        <input type="text" id="apellido2" name="apellido2">
-    </div>
-    <?php if (isset($errores['apellido2'])): ?>
-        <p class="error"><?php echo $errores['apellido2']; ?></p>
-    <?php elseif (!isset($errores['apellido2'])) : ?>
+    <?php if (isset($errores['apellido'])): ?>
+        <p class="error"><?php echo $errores['apellido']; ?></p>
+    <?php elseif (!isset($errores['id'])) : ?>
         <span></span>
     <?php endif; ?>
 </div>
@@ -128,27 +116,30 @@ foreach ($datosUsuario as $clave => $campo) {
     </div>
     <?php if (isset($errores['edad'])): ?>
         <p class="error"><?php echo $errores['edad']; ?></p>
-    <?php elseif (!isset($errores['edad'])) : ?>
+    <?php elseif (!isset($errores['id'])) : ?>
         <span></span>
     <?php endif; ?>
 </div>
 <input type="hidden" id="token" name="token" value="<?php echo $_SESSION['token']; ?>">
-<input class="button__alt" type="submit" id="modificar" name="modificar" value="Registrar Usuario">
+<input class="button__alt" type="submit" id="modificar" name="modificar" value="Modificar Usuario">
 
 <?php
-
 //Se comprueba que hay errores y se procede a modificar el usuario en la base de datos.
-if ($hayErrores) {
+if (!$hayErrores) {
     if (isset($_POST['modificar']) && $_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_POST['token'] == $_SESSION['token']) {
-            //Se muestran los datos sanitizados --> Importante: Sustituir esto por un update en la base de datos
-            echo 'Token Correcto<br>';
-            foreach ($datosUsuario as $clave => $campo) {
-                echo $clave . ": " . $campo . "<br>";
+            $datosModificar = [];
+            foreach ($datosUsuario as $key => $value) {
+                if ($key !== "id") {
+                    $datosModificar[$key] = $value;
+                }
             }
+            $conexion->update($datosUsuario['id'], $datosModificar);
+            header("Location: /usuarios");
+
+            exit();
         } else {
             echo 'Token Invalido';
         }
     }
 }
-?>

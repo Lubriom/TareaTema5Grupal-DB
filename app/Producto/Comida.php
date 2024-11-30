@@ -6,6 +6,7 @@ use DateTime;
 
 class Comida extends Producto
 {
+    
     private DateTime $caducidad;
 
     // Constructor
