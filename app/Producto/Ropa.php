@@ -17,6 +17,7 @@ class Ropa extends Producto
         return "<h1>{$this->getNombre()}</h1> <p>Talla: $this->talla</p> <p>Precio : {$this->getPrecio()} €</p>";
     }
 
+
     /**
      * Devuelve el valor del talla del producto
      */
