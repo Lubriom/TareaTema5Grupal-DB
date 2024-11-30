@@ -68,9 +68,8 @@ class Model
     {
         try {
             $smtp = $this->conex->prepare($sql);
-
+            
             $smtp->execute($data);
-
             $this->query = $smtp;
         } catch (Exception $e) {
             die('Error en la consulta: ' . $e->getMessage());
@@ -125,7 +124,7 @@ class Model
                 if ($this->orderBy) {
                     $sql .= " ORDER BY {$this->orderBy}";
                 }
-                
+
                 $this->query($sql, $this->values);
             }
         } catch (Exception $e) {
@@ -134,7 +133,7 @@ class Model
         return $this->getAll();
     }
 
-    public function find($id): array     
+    public function find($id): array
     {
         $sql = "SELECT * FROM {$this->table} WHERE id = ?";
 
@@ -231,7 +230,7 @@ class Model
         }
         return $this;
     }
-    
+
 
     public function delete($id)
     {
@@ -241,5 +240,9 @@ class Model
         } catch (Exception $e) {
             die('Error al eliminar el registro: ' . $e->getMessage());
         }
+    }
+    public function getConnection(): ?PDO
+    {
+        return $this->conex;
     }
 }

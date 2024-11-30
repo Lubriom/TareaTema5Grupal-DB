@@ -15,6 +15,7 @@
     $prodRopaModel = new ProductoModel();
     $prodElecModel = new ProductoModel();
     $prodComidaModel = new ProductoModel();
+    $transaccionProducto = new ProductoModel();
 
     ?>
     <h1 class="title">Sección de Ropa</h1>
@@ -131,7 +132,5 @@ if (isset($_POST["eliminar"])) {
         $carrito->agregarProducto($producto);
     }
 }
-
-
 
 ?>
